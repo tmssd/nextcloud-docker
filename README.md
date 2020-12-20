@@ -75,8 +75,9 @@ $ apt install -y ffmpeg imagemagick ghostscript
 Add these values to the `app/config/config.php`
 
 ```
-'enabledPreviewProviders' =>
-  array (
+'enable_previews' => true,
+  'enabledPreviewProviders' =>
+   array (
     0 => 'OC\\Preview\\TXT',
     1 => 'OC\\Preview\\MarkDown',
     2 => 'OC\\Preview\\OpenDocument',
@@ -103,7 +104,7 @@ In the admin of Nextcloud, install the app `Preview Generator`
 Then on the host server, run this command to generate all previews
 
 ```
-docker exec -it nextcloud sudo -u www-data php /var/www/html/occ preview:generate-all -vvv
+docker exec -it -u www-data nextcloud php /var/www/html/occ preview:generate-all -vvv
 ```
 
 Still on the host server, add a cronjob
@@ -113,7 +114,7 @@ crontab -u <username> -e
 ```
 
 ```
-*/30 * * * * docker exec nextcloud sudo -u www-data php /var/www/html/occ preview:pre-generate
+*/30 * * * * docker exec -u www-data nextcloud php /var/www/html/occ preview:pre-generate
 ```
 
 ### Update Nextcloud
@@ -153,7 +154,7 @@ crontab -u <username> -e
 Than paste to the end of the file and save
 
 ```
-*/5 * * * * docker exec <container_name_or_id> sudo -u www-data php -f /var/www/html/cron.php
+*/5 * * * * docker exec -u www-data <container_name_or_id> php -f /var/www/html/cron.php
 ```
 
 Verify that your cron is showing
